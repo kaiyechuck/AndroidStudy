@@ -2,6 +2,8 @@ package com.example.myquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,15 +11,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.BatchUpdateException;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_CODE_CHEAT=0;
 
+    private Button mCheatButton;
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
     private Button mPrevButton;
     private TextView mQuestionTextView;
+    private boolean mIsCheater;
+
 
     private Question[] mQuestionsBank = new Question[]{
             new Question(R.string.question_australia,true),
@@ -67,21 +75,46 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex= (mCurrentIndex+1)% mQuestionsBank.length;
+                mIsCheater=false;
                 updatequestion();
             }
         });
 
-        mPrevButton = (Button) findViewById(R.id.prev_button);
-        mPrevButton.setOnClickListener(new View.OnClickListener() {
+       // mPrevButton = (Button) findViewById(R.id.prev_button);
+//        mPrevButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mCurrentIndex= mCurrentIndex-1;
+//                if(mCurrentIndex<0){
+//                    mCurrentIndex=mQuestionsBank.length-1;
+//                }
+//                updatequestion();
+//            }
+//        });
+
+        mCheatButton =(Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex= mCurrentIndex-1;
-                if(mCurrentIndex<0){
-                    mCurrentIndex=mQuestionsBank.length-1;
-                }
-                updatequestion();
+                boolean answerIsTrue = mQuestionsBank[mCurrentIndex].isAnswerTrue();
+                Intent intent=CheatActivity.newIntent(MainActivity.this, answerIsTrue);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode!= Activity.RESULT_OK){
+            return;
+        }
+
+        if(resultCode==REQUEST_CODE_CHEAT){
+            if(data==null){
+                return;
+            }
+            mIsCheater=CheatActivity.wasAnswerShown(data);
+        }
     }
 
     @Override
@@ -123,11 +156,14 @@ public class MainActivity extends AppCompatActivity {
         boolean ansIsTrue = mQuestionsBank[mCurrentIndex].isAnswerTrue();
 
         int messageToastId = 0;
+        if(mIsCheater){
+            messageToastId=R.string.cheat_toast;
+        }else{
         if(userPressedTrue==ansIsTrue){
             messageToastId = R.string.correct_toast;
         }else{
             messageToastId=R.string.incorrect_toast;
-        }
+        }}
 
         Toast.makeText(this, messageToastId, Toast.LENGTH_SHORT).show();
     }

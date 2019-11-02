@@ -32,19 +32,31 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+<!--        <Button-->
+<!--            android:id= "@+id/prev_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/prev_button"/>-->
+
+
+
 
         <Button
-            android:id= "@+id/prev_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/prev_button"/>
+            android:id="@+id/cheat_button"
+            android:text="@string/cheat_button"
+            android:layout_gravity="center_horizontal"/>
 
         <Button
             android:id= "@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next_button"/>
+            android:text="@string/next_button"
+            android:layout_gravity="center_horizontal"/>
+
 
 
 
