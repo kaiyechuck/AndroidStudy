@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">myQuiz</string>
+    <string name="question_australia">Camberra is the capital of Australia</string>
+    <string name="question_2">This 2 is True</string>
+    <string name="question_3">This 3 is True</string>
+    <string name="question_4">This 4 is True</string>
+    <string name="question_5">This 5 is True</string>
+    <string name="question_6">This 6 is False</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="incorrect_toast">Incorrect!</string>
+    <string name="next_button">Next</string>
+    <string name="prev_button">Previous</string>
+
+</resources>
